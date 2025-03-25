@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - EduPathFinder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">EduPathFinder</div>
+            <div id="user-section">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="btn">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="onboarding-container">
+                <h1>Tell us about your learning preferences</h1>
+                <p>This will help us create personalized recommendations just for you</p>
+                
+                <form id="preferences-form">
+                    <div class="form-group">
+                        <label for="interests">What topics are you interested in learning? (Separate with commas)</label>
+                        <input type="text" id="interests" placeholder="e.g., Machine Learning, Web Development, Data Science" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="skill-level">What's your current skill level?</label>
+                        <select id="skill-level" required>
+                            <option value="">Select your level</option>
+                            <option value="beginner">Beginner - New to the subject</option>
+                            <option value="intermediate">Intermediate - Some knowledge</option>
+                            <option value="advanced">Advanced - Solid understanding</option>
+                            <option value="expert">Expert - Deep knowledge</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="learning-goal">What is your primary learning goal?</label>
+                        <select id="learning-goal" required>
+                            <option value="">Select your goal</option>
+                            <option value="career">Career advancement</option>
+                            <option value="academic">Academic achievement</option>
+                            <option value="hobby">Personal interest/hobby</option>
+                            <option value="specific-skill">Learn a specific skill</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time-commitment">How much time can you commit weekly?</label>
+                        <select id="time-commitment" required>
+                            <option value="">Select time commitment</option>
+                            <option value="minimal">Less than 3 hours/week</option>
+                            <option value="moderate">3-7 hours/week</option>
+                            <option value="substantial">7-15 hours/week</option>
+                            <option value="intensive">More than 15 hours/week</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferred-resources">What types of learning resources do you prefer?</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="resource-type" value="videos"> Video courses</label>
+                            <label><input type="checkbox" name="resource-type" value="books"> Books/E-books</label>
+                            <label><input type="checkbox" name="resource-type" value="interactive"> Interactive tutorials</label>
+                            <label><input type="checkbox" name="resource-type" value="projects"> Hands-on projects</label>
+                            <label><input type="checkbox" name="resource-type" value="articles"> Articles/Blogs</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn primary large">Generate My Learning Path</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <script src="auth.js"></script>
+    <script src="onboarding.js"></script>
+</body>
+</html>

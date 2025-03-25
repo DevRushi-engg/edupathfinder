@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Education Finder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><i class="fas fa-graduation-cap logo-icon"></i> <span class="logo-edu">Edu</span><span class="logo-path">PathFinder</span></div>
+            <div id="auth-section">
+                <button id="login-btn" class="btn">Login</button>
+                <button id="register-btn" class="btn primary">Register</button>
+            </div>
+            <div id="user-section" style="display: none;">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="btn">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Discover Your Perfect Learning Journey</h1>
+                    <p>AI-powered personalized recommendations based on your interests, skills, and goals</p>
+                    <button id="get-started-btn" class="btn primary large">Get Started</button>
+                </div>
+                <div class="hero-image">
+                    <img src="image.png" alt="Learning illustration" width="100%" style="max-width: 500px; height: auto; border: none; outline: none; box-shadow: none; display: block;">
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>How It Works</h2>
+                <p class="section-description">Three simple steps to your personalized learning path</p>
+                <div class="feature-cards">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <h3>1. Tell us about yourself</h3>
+                        <p>Share your interests, current skill level, and learning goals with our platform</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>2. Get AI-powered recommendations</h3>
+                        <p>Our AI generates the perfect learning resources and pathways just for you</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>3. Track your progress</h3>
+                        <p>Visualize your journey, celebrate milestones, and stay motivated</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="popular-paths">
+            <div class="container">
+                <h2>Popular Learning Paths</h2>
+                <p class="section-description">Explore some of our most followed learning journeys</p>
+                <div class="paths-grid">
+                    <div class="path-card">
+                        <div class="path-icon web-dev"></div>
+                        <h3>Web Development</h3>
+                        <p>From HTML basics to full-stack applications</p>
+                        <ul class="path-highlights">
+                            <li>Frontend & Backend Technologies</li>
+                            <li>Responsive Design</li>
+                            <li>Modern Frameworks</li>
+                        </ul>
+                    </div>
+                    <div class="path-card">
+                        <div class="path-icon data-science"></div>
+                        <h3>Data Science</h3>
+                        <p>Master data analysis and visualization</p>
+                        <ul class="path-highlights">
+                            <li>Statistical Analysis</li>
+                            <li>Data Visualization</li>
+                            <li>Machine Learning Basics</li>
+                        </ul>
+                    </div>
+                    <div class="path-card">
+                        <div class="path-icon ai-ml"></div>
+                        <h3>AI & Machine Learning</h3>
+                        <p>Build intelligent systems and models</p>
+                        <ul class="path-highlights">
+                            <li>Neural Networks</li>
+                            <li>Computer Vision</li>
+                            <li>Natural Language Processing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-info-simple">
+            <div class="container">
+                <h2>Powered by Advanced AI</h2>
+                <p>EduPathFinder uses the Groq AI platform to create personalized learning paths based on your unique needs and goals.</p>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Start Your Learning Journey?</h2>
+                <p>Create your personalized learning path in minutes</p>
+                <button id="cta-get-started-btn" class="btn primary large">Get Started Now</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="login-form">
+                <h2>Login</h2>
+                <form id="login-form-element">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn primary">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h2>Register</h2>
+                <form id="register-form-element">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn primary">Register</button>
+                </form>
+                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

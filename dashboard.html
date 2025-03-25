@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EduPathFinder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">EduPathFinder</div>
+            <div id="user-section">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="btn">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container dashboard-container">
+            <h1>Your Learning Dashboard</h1>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-sidebar">
+                    <div class="user-profile">
+                        <h3>Your Profile</h3>
+                        <div id="user-preferences">
+                            <p><strong>Interests:</strong> <span id="user-interests"></span></p>
+                            <p><strong>Level:</strong> <span id="user-level"></span></p>
+                            <p><strong>Goal:</strong> <span id="user-goal"></span></p>
+                        </div>
+                        <div class="button-group">
+                            <button id="update-preferences" class="btn">Update Preferences</button>
+                            <button id="reset-progress-btn" class="btn danger">Reset Progress</button>
+                        </div>
+                    </div>
+                    
+                    <div class="learning-progress">
+                        <h3>Progress Overview</h3>
+                        <div class="progress-stats">
+                            <div class="progress-item">
+                                <div class="progress-label">Completed resources</div>
+                                <div class="progress-value" id="completed-count">0</div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-label">Overall completion</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="overall-progress" style="width: 0%"></div>
+                                    <div class="progress-percentage" id="progress-percentage">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="learning-paths">
+                    <div class="section-header">
+                        <h2>Your Personalized Learning Path</h2>
+                        <div class="section-actions">
+                            <button id="refresh-recommendations-btn" class="btn">Refresh Recommendations</button>
+                            <div id="loading-recommendations" style="display: none;">
+                                <div class="loader"></div>
+                                <span>Generating recommendations...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="path-controls">
+                        <div class="search-container">
+                            <input type="text" id="resource-search" placeholder="Search resources...">
+                        </div>
+                        <div class="filter-container">
+                            <select id="resource-filter">
+                                <option value="all">All Resources</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                            <select id="type-filter">
+                                <option value="all">All Types</option>
+                                <option value="Course">Courses</option>
+                                <option value="Book">Books</option>
+                                <option value="Tutorial">Tutorials</option>
+                                <option value="Project">Projects</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="no-recommendations" style="display: none;">
+                        <p>No learning path available. Please update your preferences.</p>
+                    </div>
+                    
+                    <div id="learning-path-container">
+                        <!-- Learning path items will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="auth.js"></script>
+    <script src="api.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
