@@ -2,11 +2,9 @@
 
 // Groq API configuration
 const GROQ_API_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'llama-3.3-70b-versatile'; // You can also use 'mixtral-8x7b-32768' or other Groq models
+const GROQ_MODEL = 'llama-3.3-70b-versatile'; // Here we can change models for different use cases
 
-// This would typically be stored securely and not in client-side code
-// For a real production app, this should be handled by a backend service
-// For demo purposes, we'll store it in localStorage (not recommended for production)
+// For demo purposes, we'll store api key in localStorage
 let GROQ_API_KEY = localStorage.getItem('groq_api_key');
 
 async function generateRecommendations(preferences) {
@@ -26,10 +24,10 @@ async function generateRecommendations(preferences) {
             localStorage.setItem('groq_api_key', GROQ_API_KEY);
         }
 
-        // Create prompt for the AI
+        // Created prompt for the AI
         const prompt = createPromptFromPreferences(preferences);
         
-        // Call Groq API
+        // For Calling Groq API
         const response = await callGroqAPI(prompt);
         
         // Parse learning path from response
@@ -62,7 +60,7 @@ function promptForAPIKey() {
 }
 
 function createPromptFromPreferences(preferences) {
-    // Create a detailed prompt based on user preferences
+    // Creating a detailed prompt based on user preferences
     return `
 You are an educational content recommendation system. Create a personalized learning path based on the following user preferences:
 
@@ -129,7 +127,7 @@ async function callGroqAPI(prompt) {
         if (!response.ok) {
             const errorData = await response.json();
             
-            // Handle specific error codes
+            // For Handling specific error codes
             if (response.status === 401) {
                 throw new Error('Invalid API key. Please check your Groq API key and try again.');
             } else if (response.status === 429) {
@@ -234,12 +232,12 @@ function createMockRecommendations(preferences) {
                 learningPath = learningPath.concat(getJavaScriptResources(level, goal));
                 break;
             default:
-                // For any other interest, provide some general resources
+                // For any other interest, providing some general resources
                 learningPath = learningPath.concat(getGeneralResources(interest, level, goal));
         }
     });
     
-    // Add unique IDs to each resource and initialize completion status
+    // Adding unique IDs to each resource and initialize completion status
     learningPath = learningPath.map((resource, index) => {
         return {
             ...resource,
