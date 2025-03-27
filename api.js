@@ -16,12 +16,9 @@ async function generateRecommendations(preferences) {
     try {
         // Check if API key is set
         if (!GROQ_API_KEY) {
-            // Prompt user for API key if not set
-            GROQ_API_KEY = await promptForAPIKey();
-            if (!GROQ_API_KEY) {
-                throw new Error('API key is required to generate recommendations');
-            }
-            localStorage.setItem('groq_api_key', GROQ_API_KEY);
+            // Show API key dropdown if not set
+            showApiKeyDropdown();
+            throw new Error('Please enter your Groq API key to generate recommendations');
         }
 
         // Created prompt for the AI
@@ -48,14 +45,74 @@ async function generateRecommendations(preferences) {
     }
 }
 
+// Replace the prompt function with a UI-based approach
 function promptForAPIKey() {
+    showApiKeyDropdown();
     return new Promise((resolve) => {
-        const apiKey = prompt(
-            "Please enter your Groq API key to generate personalized recommendations.\n" +
-            "You can get a free API key at https://console.groq.com/keys\n" +
-            "Your API key is stored locally on your device and not sent to our servers."
-        );
-        resolve(apiKey);
+        // The promise will be resolved by the save button click event
+        // This is now handled by the event listeners added in initApiKeyHandlers
+    });
+}
+
+// Function to show the API key dropdown
+function showApiKeyDropdown() {
+    const dropdown = document.getElementById('api-key-dropdown');
+    if (dropdown) {
+        dropdown.classList.add('active');
+    }
+}
+
+// Initialize API key handling - add this to the file
+document.addEventListener('DOMContentLoaded', function() {
+    initApiKeyHandlers();
+});
+
+function initApiKeyHandlers() {
+    // API key dropdown toggle
+    const apiKeyBtn = document.getElementById('api-key-btn');
+    const apiKeyDropdown = document.getElementById('api-key-dropdown');
+    const groqApiKeyInput = document.getElementById('groq-api-key');
+    const saveApiKeyBtn = document.getElementById('save-api-key');
+    const clearApiKeyBtn = document.getElementById('clear-api-key');
+    
+    if (!apiKeyBtn || !apiKeyDropdown) return;
+    
+    // Update input with stored API key if available
+    if (GROQ_API_KEY) {
+        groqApiKeyInput.value = GROQ_API_KEY;
+    }
+    
+    // Toggle dropdown on button click
+    apiKeyBtn.addEventListener('click', function() {
+        apiKeyDropdown.classList.toggle('active');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!apiKeyBtn.contains(event.target) && !apiKeyDropdown.contains(event.target)) {
+            apiKeyDropdown.classList.remove('active');
+        }
+    });
+    
+    // Save API key
+    saveApiKeyBtn.addEventListener('click', function() {
+        const apiKey = groqApiKeyInput.value.trim();
+        if (apiKey) {
+            GROQ_API_KEY = apiKey;
+            localStorage.setItem('groq_api_key', apiKey);
+            apiKeyDropdown.classList.remove('active');
+            alert('API key saved successfully!');
+        } else {
+            alert('Please enter a valid API key');
+        }
+    });
+    
+    // Clear API key
+    clearApiKeyBtn.addEventListener('click', function() {
+        groqApiKeyInput.value = '';
+        GROQ_API_KEY = null;
+        localStorage.removeItem('groq_api_key');
+        alert('API key cleared successfully!');
     });
 }
 

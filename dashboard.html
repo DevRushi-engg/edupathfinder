@@ -12,7 +12,7 @@
         <nav>
             <div class="logo"><i class="fas fa-graduation-cap logo-icon"></i> <span class="logo-edu">Edu</span><span class="logo-path">PathFinder</span></div>
             <div id="user-section">
-                <span id="username-display"></span>
+                <span id="username-display"><i class="fas fa-user-circle"></i> <span id="username-text"></span></span>
                 <button id="logout-btn" class="btn">Logout</button>
             </div>
         </nav>
@@ -59,6 +59,24 @@
                     <div class="section-header">
                         <h2>Your Personalized Learning Path</h2>
                         <div class="section-actions">
+                            <div class="api-key-container">
+                                <button id="api-key-btn" class="btn"><i class="fas fa-key"></i> API Key</button>
+                                <button id="api-key-help-btn" class="btn help-btn" title="How to get an API key"><i class="fas fa-question-circle"></i></button>
+                                <div id="api-key-dropdown" class="api-key-dropdown">
+                                    <div class="api-key-form">
+                                        <p>Enter your Groq API key to generate personalized recommendations. 
+                                           You can get a free API key at <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>.</p>
+                                        <div class="form-group">
+                                            <label for="groq-api-key">API Key:</label>
+                                            <input type="password" id="groq-api-key" placeholder="Enter your Groq API key">
+                                            <div class="api-key-actions">
+                                                <button id="save-api-key" class="btn primary">Save Key</button>
+                                                <button id="clear-api-key" class="btn danger">Clear Key</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <button id="refresh-recommendations-btn" class="btn">Refresh Recommendations</button>
                             <div id="loading-recommendations" style="display: none;">
                                 <div class="loader"></div>
@@ -99,6 +117,64 @@
         </div>
 
     </main>
+
+    <!-- API Key Help Modal -->
+    <div id="api-key-help-modal" class="modal">
+        <div class="modal-content api-help-content">
+            <span class="close">&times;</span>
+            <h2>How to Get Your Groq API Key</h2>
+            <div class="help-steps">
+                <div class="help-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Create a Groq Account</h3>
+                        <p>Visit <a href="https://console.groq.com/login" target="_blank">Groq Console</a> and sign up for a free account</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Navigate to API Keys</h3>
+                        <p>Once logged in, click on "API Keys" in the left navigation menu</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Create a New API Key</h3>
+                        <p>Click the "Create API Key" button and give it a name (e.g., "EduPathFinder")</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Copy Your API Key</h3>
+                        <p>Copy the generated key and paste it in the API Key field in this application</p>
+                        <div class="important-note">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>Important: This key is only shown once. Make sure to save it somewhere safe.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Save Your Key</h3>
+                        <p>Click "Save Key" in the API Key dropdown to store it securely in your browser</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="api-help-footer">
+                <p>Need more help? Visit the <a href="https://console.groq.com/docs" target="_blank">Groq Documentation</a></p>
+                <button id="close-help-modal" class="btn primary">Got It!</button>
+            </div>
+        </div>
+    </div>
 
     <script src="auth.js"></script>
     <script src="api.js"></script>

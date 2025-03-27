@@ -19,7 +19,11 @@ function checkAuthStatus() {
         
         if (document.getElementById('user-section')) {
             document.getElementById('user-section').style.display = 'flex';
-            document.getElementById('username-display').textContent = user.name;
+            if (document.getElementById('username-text')) {
+                document.getElementById('username-text').textContent = user.name;
+            } else {
+                document.getElementById('username-display').textContent = user.name;
+            }
         }
         
         // If on index page and user is logged in, they should have preferences

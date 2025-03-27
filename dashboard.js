@@ -86,6 +86,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Update progress statistics
     updateProgressStats(learningPath);
+
+    // Initialize the API key dropdown functionality
+    initApiKeyUI();
+    
+    // Initialize API key help functionality
+    initApiKeyHelp();
 });
 
 function formatSkillLevel(level) {
@@ -296,5 +302,49 @@ function displayFilteredLearningPath(filteredResources) {
         checkbox.addEventListener('change', function() {
             toggleResourceCompletion(resource.id, this.checked);
         });
+    });
+}
+
+// Add this function to initialize API key UI
+function initApiKeyUI() {
+    // Check if API key exists and update UI accordingly
+    const apiKey = localStorage.getItem('groq_api_key');
+    const apiKeyBtn = document.getElementById('api-key-btn');
+    
+    if (apiKey && apiKeyBtn) {
+        // Add an indicator that the API key is set
+        apiKeyBtn.innerHTML = '<i class="fas fa-key"></i> API Key <span class="api-key-status">✓</span>';
+        apiKeyBtn.classList.add('api-key-set');
+    }
+}
+
+// Add this function to initialize API key help functionality
+function initApiKeyHelp() {
+    const helpBtn = document.getElementById('api-key-help-btn');
+    const helpModal = document.getElementById('api-key-help-modal');
+    const closeBtn = helpModal.querySelector('.close');
+    const gotItBtn = document.getElementById('close-help-modal');
+    
+    // Show help modal when clicking the help button
+    helpBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        helpModal.style.display = 'block';
+    });
+    
+    // Close help modal when clicking the close button
+    closeBtn.addEventListener('click', function() {
+        helpModal.style.display = 'none';
+    });
+    
+    // Close help modal when clicking the "Got It!" button
+    gotItBtn.addEventListener('click', function() {
+        helpModal.style.display = 'none';
+    });
+    
+    // Close help modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        if (event.target === helpModal) {
+            helpModal.style.display = 'none';
+        }
     });
 }
