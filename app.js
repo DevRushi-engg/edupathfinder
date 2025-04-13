@@ -36,6 +36,57 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Add mobile navigation toggle
+    const header = document.querySelector('header');
+    if (header) {
+        const nav = header.querySelector('nav');
+        
+        // Create mobile menu toggle button if it doesn't exist
+        if (!document.querySelector('.mobile-nav-toggle')) {
+            const mobileToggle = document.createElement('button');
+            mobileToggle.className = 'mobile-nav-toggle';
+            mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            mobileToggle.setAttribute('aria-label', 'Toggle menu');
+            nav.insertBefore(mobileToggle, nav.firstChild.nextSibling);
+            
+            // Event listener for mobile toggle
+            mobileToggle.addEventListener('click', function() {
+                const authSection = document.getElementById('auth-section');
+                const userSection = document.getElementById('user-section');
+                
+                if (authSection) {
+                    authSection.classList.toggle('active');
+                    mobileToggle.innerHTML = authSection.classList.contains('active') ? 
+                        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                }
+                
+                if (userSection) {
+                    userSection.classList.toggle('active');
+                    mobileToggle.innerHTML = userSection.classList.contains('active') ? 
+                        '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                }
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const authSection = document.getElementById('auth-section');
+                const userSection = document.getElementById('user-section');
+                
+                if (!nav.contains(event.target)) {
+                    if (authSection && authSection.classList.contains('active')) {
+                        authSection.classList.remove('active');
+                        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                    
+                    if (userSection && userSection.classList.contains('active')) {
+                        userSection.classList.remove('active');
+                        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        }
+    }
 });
 
 // Utility function to check localStorage availability
@@ -51,3 +102,15 @@ function storageAvailable(type) {
         return false;
     }
 }
+
+// Add viewport height fix for mobile browsers
+function setMobileViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Set the height on first load
+setMobileViewportHeight();
+
+// Reset the height on resize
+window.addEventListener('resize', setMobileViewportHeight);

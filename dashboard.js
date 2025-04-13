@@ -142,6 +142,9 @@ function displayLearningPath(learningPath) {
             resourceElement.classList.add('unverified-resource');
         }
         
+        // Add responsive classes for better mobile layout
+        resourceElement.classList.add('responsive-item');
+        
         // Create reliability badge
         let reliabilityBadge = '';
         if (resource.resourceConfidence === 'high') {
