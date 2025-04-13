@@ -133,6 +133,35 @@ function displayLearningPath(learningPath) {
             resourceElement.classList.add('completed');
         }
         
+        // Add verification classes based on resource confidence
+        if (resource.resourceConfidence === 'high') {
+            resourceElement.classList.add('verified-resource');
+        } else if (resource.resourceConfidence === 'medium') {
+            resourceElement.classList.add('likely-resource');
+        } else {
+            resourceElement.classList.add('unverified-resource');
+        }
+        
+        // Create reliability badge
+        let reliabilityBadge = '';
+        if (resource.resourceConfidence === 'high') {
+            reliabilityBadge = `<span class="reliability-badge high" title="${resource.verificationNote || 'Highly reliable resource'}">
+                <i class="fas fa-check-circle"></i> Verified
+            </span>`;
+        } else if (resource.resourceConfidence === 'medium') {
+            reliabilityBadge = `<span class="reliability-badge medium" title="${resource.verificationNote || 'Moderately reliable resource'}">
+                <i class="fas fa-shield-alt"></i> Likely Available
+            </span>`;
+        } else {
+            reliabilityBadge = `<span class="reliability-badge low" title="${resource.verificationNote || 'Reliability unknown'}">
+                <i class="fas fa-question-circle"></i> Unverified
+            </span>`;
+        }
+        
+        // Platform badge
+        const platformBadge = resource.platform ? 
+            `<span class="platform-badge">${resource.platform}</span>` : '';
+        
         resourceElement.innerHTML = `
             <div class="item-header">
                 <div class="item-title">${resource.title}</div>
@@ -141,7 +170,11 @@ function displayLearningPath(learningPath) {
             <div class="item-description">${resource.description}</div>
             <div class="item-details">
                 <span class="item-time">Estimated time: ${resource.estimatedTime}</span>
-                <a href="${resource.link}" class="item-link" target="_blank">View Resource</a>
+                <div class="item-badges">
+                    ${platformBadge}
+                    ${reliabilityBadge}
+                </div>
+                <a href="${resource.link}" class="item-link" target="_blank" rel="noopener noreferrer">View Resource</a>
             </div>
             <div class="completion-toggle">
                 <input type="checkbox" id="complete_${resource.id}" ${resource.completed ? 'checked' : ''}>

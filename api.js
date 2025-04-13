@@ -2,10 +2,32 @@
 
 // Groq API configuration
 const GROQ_API_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'llama-3.3-70b-versatile'; // Here we can change models for different use cases
+const GROQ_MODEL = 'gemma2-9b-it'; // Here we can change models for different use cases
 
 // For demo purposes, we'll store api key in localStorage
 let GROQ_API_KEY = localStorage.getItem('groq_api_key');
+
+// List of reliable educational platforms for resource validation
+const RELIABLE_PLATFORMS = [
+  { domain: 'coursera.org', name: 'Coursera', confidence: 'high' },
+  { domain: 'udemy.com', name: 'Udemy', confidence: 'high' },
+  { domain: 'edx.org', name: 'edX', confidence: 'high' },
+  { domain: 'khanacademy.org', name: 'Khan Academy', confidence: 'high' },
+  { domain: 'freecodecamp.org', name: 'freeCodeCamp', confidence: 'high' },
+  { domain: 'codecademy.com', name: 'Codecademy', confidence: 'high' },
+  { domain: 'w3schools.com', name: 'W3Schools', confidence: 'high' },
+  { domain: 'udacity.com', name: 'Udacity', confidence: 'high' },
+  { domain: 'pluralsight.com', name: 'Pluralsight', confidence: 'high' },
+  { domain: 'linkedin.com/learning', name: 'LinkedIn Learning', confidence: 'high' },
+  { domain: 'skillshare.com', name: 'Skillshare', confidence: 'medium' },
+  { domain: 'datacamp.com', name: 'DataCamp', confidence: 'high' },
+  { domain: 'youtube.com', name: 'YouTube', confidence: 'medium' },
+  { domain: 'github.com', name: 'GitHub', confidence: 'medium' },
+  { domain: 'stackoverflow.com', name: 'Stack Overflow', confidence: 'medium' },
+  { domain: 'mit.edu', name: 'MIT OpenCourseWare', confidence: 'high' },
+  { domain: 'microsoft.com/learn', name: 'Microsoft Learn', confidence: 'high' },
+  { domain: 'developer.mozilla.org', name: 'MDN Web Docs', confidence: 'high' }
+];
 
 async function generateRecommendations(preferences) {
     // Show loading state
@@ -21,14 +43,17 @@ async function generateRecommendations(preferences) {
             throw new Error('Please enter your Groq API key to generate recommendations');
         }
 
-        // Created prompt for the AI
-        const prompt = createPromptFromPreferences(preferences);
+        // Create enhanced prompt for the AI
+        const prompt = createEnhancedPromptFromPreferences(preferences);
         
-        // For Calling Groq API
+        // Call Groq API
         const response = await callGroqAPI(prompt);
         
         // Parse learning path from response
-        const learningPath = parseLearningPathFromResponse(response, preferences);
+        let learningPath = parseLearningPathFromResponse(response, preferences);
+        
+        // Validate and enhance the learning resources
+        learningPath = validateAndEnhanceResources(learningPath);
         
         return learningPath;
     } catch (error) {
@@ -116,8 +141,8 @@ function initApiKeyHandlers() {
     });
 }
 
-function createPromptFromPreferences(preferences) {
-    // Creating a detailed prompt based on user preferences
+function createEnhancedPromptFromPreferences(preferences) {
+    // Creating a detailed prompt based on user preferences with focus on valid resources
     return `
 You are an educational content recommendation system. Create a personalized learning path based on the following user preferences:
 
@@ -127,14 +152,23 @@ Learning Goal: ${preferences.learningGoal}
 Time Commitment: ${preferences.timeCommitment}
 Preferred Resource Types: ${preferences.resourceTypes ? preferences.resourceTypes.join(', ') : 'All types'}
 
+IMPORTANT GUIDELINES FOR RECOMMENDATIONS:
+1. Only recommend resources from well-established, reliable platforms that definitely exist and are accessible
+2. Double-check all URLs to make sure they point to actual resources and not just homepages
+3. Prioritize these reliable platforms: Coursera, edX, Udemy, Khan Academy, freeCodeCamp, Codecademy, W3Schools, YouTube, MIT OpenCourseWare, DataCamp
+4. For each URL, verify the exact path to the specific course/resource (not just the platform's homepage)
+5. Include ONLY resources that you are CERTAIN exist with valid, functioning URLs
+6. If recommending a course, ensure it's a currently available course
+
 For each topic of interest, provide 3-5 learning resources that form a coherent learning path from the user's current skill level towards their goal.
 
 For each resource, provide the following information in JSON format:
 - title: The name of the resource
 - type: The type of resource (e.g., Course, Book, Tutorial, Project)
 - description: A brief description of what the user will learn
-- link: URL to access the resource
+- link: URL to access the resource (must be a direct link to the specific resource)
 - estimatedTime: Estimated time to complete (e.g., "2 weeks", "4 hours")
+- platform: The platform hosting the resource (e.g., "Coursera", "YouTube", "freeCodeCamp")
 
 Ensure the resources match the user's skill level, build on each other in a logical order, and include a mix of theoretical learning and practical application.
 
@@ -144,8 +178,9 @@ Return your recommendations as a valid JSON array using the following structure:
     "title": "Resource Title",
     "type": "Resource Type",
     "description": "Resource Description",
-    "link": "https://resource-url.com",
-    "estimatedTime": "Completion Time"
+    "link": "https://specific-resource-url.com/course-name",
+    "estimatedTime": "Completion Time",
+    "platform": "Platform Name"
   }
 ]
 `;
@@ -235,6 +270,7 @@ function parseLearningPathFromResponse(response, preferences) {
                 description: resource.description || 'No description provided',
                 link: resource.link || '#',
                 estimatedTime: resource.estimatedTime || 'Unknown',
+                platform: resource.platform || extractPlatformFromUrl(resource.link || ''),
                 completed: false
             };
         });
@@ -247,6 +283,90 @@ function parseLearningPathFromResponse(response, preferences) {
         // If parsing fails, fall back to mock data
         alert('Error parsing AI recommendations. Falling back to standard recommendations.');
         return createMockRecommendations(preferences);
+    }
+}
+
+// Function to validate and enhance resources
+function validateAndEnhanceResources(learningPath) {
+    return learningPath.map(resource => {
+        // Check URL validity
+        const urlValidationResult = validateResourceUrl(resource.link);
+        
+        // Assign platform confidence based on domain
+        let platformConfidence = 'low';
+        let platformName = resource.platform || extractPlatformFromUrl(resource.link);
+        
+        const matchedPlatform = RELIABLE_PLATFORMS.find(platform => 
+            resource.link.includes(platform.domain)
+        );
+        
+        if (matchedPlatform) {
+            platformConfidence = matchedPlatform.confidence;
+            platformName = matchedPlatform.name;
+        }
+        
+        // Enhance the resource object
+        return {
+            ...resource,
+            platform: platformName,
+            urlValidity: urlValidationResult.valid ? 'valid' : 'unknown',
+            resourceConfidence: platformConfidence,
+            verified: platformConfidence === 'high',
+            verificationNote: urlValidationResult.valid 
+                ? `This resource is from ${platformName}, a reliable learning platform`
+                : `This resource may not have a valid or direct link`
+        };
+    });
+}
+
+// Basic URL validation function
+function validateResourceUrl(url) {
+    try {
+        // Parse the URL to check basic validity
+        const parsedUrl = new URL(url);
+        
+        // Check if URL has proper protocol
+        const hasValidProtocol = parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+        
+        // Check if it's not just a homepage but a specific resource
+        // Good URLs typically have more path segments or query parameters
+        const isSpecificResource = parsedUrl.pathname.length > 1 && parsedUrl.pathname !== '/';
+        
+        // Determine if the URL appears to be a search results page rather than a specific resource
+        const isSearchPage = parsedUrl.pathname.includes('search') || 
+                           parsedUrl.pathname.includes('find') || 
+                           parsedUrl.search.includes('search') || 
+                           parsedUrl.search.includes('query');
+                           
+        // Check if URL is from a reliable domain
+        const isReliableDomain = RELIABLE_PLATFORMS.some(platform => parsedUrl.hostname.includes(platform.domain));
+        
+        return {
+            valid: hasValidProtocol && isSpecificResource && !isSearchPage,
+            isReliableDomain,
+            isSearchPage
+        };
+    } catch (error) {
+        console.warn('URL validation error:', error);
+        return { valid: false };
+    }
+}
+
+// Extract platform name from URL
+function extractPlatformFromUrl(url) {
+    try {
+        const parsedUrl = new URL(url);
+        const domain = parsedUrl.hostname.replace('www.', '');
+        
+        // Extract the main domain part (e.g., 'coursera.org' from 'www.coursera.org')
+        const domainParts = domain.split('.');
+        if (domainParts.length >= 2) {
+            return domainParts[domainParts.length - 2].charAt(0).toUpperCase() + 
+                   domainParts[domainParts.length - 2].slice(1);
+        }
+        return domain;
+    } catch (error) {
+        return 'Unknown Platform';
     }
 }
 
