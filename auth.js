@@ -1,4 +1,4 @@
-// Simple authentication system using localStorage
+// Simple authentication system base on  localStorage
 
 // Check if user is logged in on page load
 document.addEventListener('DOMContentLoaded', function() {

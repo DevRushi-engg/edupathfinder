@@ -4,7 +4,7 @@
 const GROQ_API_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'gemma2-9b-it'; // Here we can change models for different use cases
 
-// For demo purposes, we'll store api key in localStorage
+// For demo purposes, storing store api key in localStorage
 let GROQ_API_KEY = localStorage.getItem('groq_api_key');
 
 // List of reliable educational platforms for resource validation
@@ -70,7 +70,7 @@ async function generateRecommendations(preferences) {
     }
 }
 
-// Replace the prompt function with a UI-based approach
+// Replacing the prompt function with a UI-based approach(use for entering the API key)
 function promptForAPIKey() {
     showApiKeyDropdown();
     return new Promise((resolve) => {
@@ -142,7 +142,7 @@ function initApiKeyHandlers() {
 }
 
 function createEnhancedPromptFromPreferences(preferences) {
-    // Creating a detailed prompt based on user preferences with focus on valid resources
+    // Here Created a detailed prompt based on user preferences with focus on valid resources
     return `
 You are an educational content recommendation system. Create a personalized learning path based on the following user preferences:
 
@@ -332,7 +332,7 @@ function validateResourceUrl(url) {
         // Good URLs typically have more path segments or query parameters
         const isSpecificResource = parsedUrl.pathname.length > 1 && parsedUrl.pathname !== '/';
         
-        // Determine if the URL appears to be a search results page rather than a specific resource
+        // Determining if the URL appears to be a search results page rather than a specific resource
         const isSearchPage = parsedUrl.pathname.includes('search') || 
                            parsedUrl.pathname.includes('find') || 
                            parsedUrl.search.includes('search') || 
@@ -373,7 +373,7 @@ function extractPlatformFromUrl(url) {
 // Keep the existing mock recommendation functions as fallback
 
 function createMockRecommendations(preferences) {
-    // Generate mock recommendations based on user preferences
+    //Mock Data for demonstration purposes
     const interests = preferences.interests.split(',').map(i => i.trim());
     const level = preferences.skillLevel;
     const goal = preferences.learningGoal;

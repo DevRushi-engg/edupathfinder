@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const footerYear = document.querySelector('footer .container p');
     if (footerYear) {
         const currentYear = new Date().getFullYear();
-        footerYear.innerHTML = footerYear.innerHTML.replace('2023', currentYear);
+        footerYear.innerHTML = footerYear.innerHTML.replace('2025', currentYear);
     }
 
     // Handle CTA buttons
