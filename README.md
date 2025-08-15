@@ -1,5 +1,5 @@
 # EduPathFinder
-[![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/DevRushi-engg/edupathfinder)
+
 
 EduPathFinder is an intelligent web application that crafts personalized learning paths for users. By leveraging the power of Groq AI, it analyzes your interests, current skill level, and learning goals to recommend a curated list of high-quality educational resources, including courses, tutorials, books, and projects.
 
